@@ -1,0 +1,48 @@
+install.packages("gmm")
+library(gmm)
+
+#COMPARAÇÃO ENTRE O MM E O GMM
+
+n <- 1000
+x <- rnorm(n,2,4)
+# MM (just identified)
+g0 <- function(tet, x) {
+  m1 <- (tet[1] - x)
+  m2 <- (tet[2]^2 - (x - tet[1])^2)
+  f <- cbind(m1, m2)
+  return(f)
+}
+# GMM Sobre Identificado
+g1 <- function(tet, x) {
+  m1 <- (tet[1] - x)
+  m2 <- (tet[2]^2 - (x - tet[1])^2)
+  m3 <- x^3 - tet[1] * (tet[1]^2 + 3 * tet[2]^2)
+  f <- cbind(m1, m2, m3)
+  return(f)
+}
+res0 <- gmm(g0, x, c(0,0))
+res1 <- gmm(g1, x, c(0,0))
+
+summary(res0)
+summary(res1)
+
+data(Finance)
+dados = Finance
+View(dados)
+?Finance
+
+#Capital Asset Pricing Model(CAPM)
+
+
+r <- dados[-1000:-1, 1:10]
+rm <- dados[-1000:-1, "rm"]
+rf <- dados[-1000:-1, "rf"]
+
+
+
+z <- as.matrix(r-rf)
+t <- nrow(z)
+zm <- rm-rf
+h <- matrix(zm, t, 1)
+capm <- gmm(z ~ zm, x = h)
+summary(capm)
