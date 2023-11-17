@@ -1,7 +1,3 @@
 # Statistical-Inference
-Implementação de algoritmos:
--Newton Raphson Method;
--Fisher Scoring;
--BFGS;
--SR-1;
--DFP
+Codes of the course Statistical Inference II
+1. Generalized Method of Moments
